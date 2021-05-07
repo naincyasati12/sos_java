@@ -1,0 +1,13 @@
+'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+
+        'NAME': 'djangodb',
+
+        'USER': 'postgres',
+
+        'PASSWORD': 'naincy',
+
+        'HOST': 'localhost',
+
+        'PORT': '5432',
+    }
