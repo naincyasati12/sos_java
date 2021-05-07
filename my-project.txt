@@ -1,0 +1,246 @@
+class User(models.Model):  
+    firstName = models.CharField(max_length=50)  
+    lastName = models.CharField(max_length=50)  
+    login =  models.EmailField()
+    password = models.CharField(max_length=20)
+    dob = models.DateField(max_length=20)
+    role_ID=models.IntegerField() 
+    role_Name = models.CharField(max_length=50)
+    class Meta:  
+        db_table = "SOS_USER"   
+
+
+
+login.html
+
+{% include  "./Header.html"%}
+<br>
+<div class="col-sm-6">
+    <div class="card">
+        <div class="card-header ">
+            <h2>Login</h2>
+        </div>
+        <div class="card-body">
+            <div class="container">
+                <p style="color: red;"> {{form.message}}</p>
+
+                <form method="POST" novalidate>
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-md-12 control-label">Login </label>
+                            <div class="col-md-12 inputGroupContainer">
+                                <div class="input-group">
+                                    <input name="loginId" value="{{form.loginId}}" class="form-control" type="email">
+                                    <span style="color: red;"> {{form.inputError.loginId}} </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12 control-label">Password</label>
+                            <div class="col-md-12 inputGroupContainer">
+                                <div class="input-group">
+                                    <input name="password" value="{{form.password}}" class="form-control"
+                                        type="password" id="password" required class="form-control">
+                                    <span style="color: red;"> {{form.inputError.password}} </span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-12 control-label"></label>
+                            <div class="col-md-10 pull-right">
+                                <button type="submit" value="SingnIn" class="btn btn-primary">Login
+                                    <span class="fas fa-paper-plane"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <a href="/ORS/ForgetPassword">forgot Password</a>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% include  "./Footer.html"%}
+
+
+
+
+
+
+hearder.html
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+<!--Used for icon-->
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/ORS/Login">NCS</a>
+    <div class="collapse navbar-collapse" id="navbarToggler">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/Registration">Registration</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/Login">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/User">User</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/UserList">UserList</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/College">College</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/CollegeList">CollegeList</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/Course">Course</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/CourseList">CourseList</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/Marksheet">Marksheet</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/MarksheetList">MarksheetList</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/Role">Role</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/RoleList">RoleList</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/Student">Student</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/StudentList">StudentList</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ORS/Logout">Logout</a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+<!--
+<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
+aria-haspopup="true" aria-expanded="false">  
+
+<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+<a class="dropdown-item" href="/ORS/UserList">UserList</a>
+<a class="dropdown-item" href="#!login">Logout</a>
+<a class="dropdown-item" href="#!changePassword">Change Password</a>
+<a class="dropdown-item" href="#!profile">Edit Profile</a>
+</div></a>
+-->
+
+
+
+
+
+
+
+home/index===new h
+
+
+
+
+WELCOMECTL
+
+
+
+from django.http import HttpResponse
+from .BaseCtl import BaseCtl
+from django.shortcuts import render
+
+
+class WelcomeCtl(BaseCtl):
+
+    def display(self,request,params={}):
+        user = request.session.get("user",None)
+        if(user is not None):
+            self.form["message"] = "Welcome " + user.login
+        return render(request,self.get_template(),{"form":self.form})
+
+    def submit(self,request,params={}):
+        return render(request,self.get_template(),{"form":self.form})
+
+    # Template html of Role page    
+    def get_template(self):
+        return "ors/Welcome.html"        
+
+    # Service of Role     
+    def get_service(self):
+        return "RoleService()"        
+
+        
+
+
+
+WELCOME.HTML
+
+{% include  "./Header.html"%}
+<div class="container">
+    <style>
+        mark {
+            background-color: #e3f1fca1;
+
+            -webkit-box-shadow: 2px 9px 38px -1px rgba(139, 229, 232, 1);
+            -moz-box-shadow: 2px 9px 38px -1px rgba(139, 229, 232, 1);
+            box-shadow: 2px 9px 38px -1px rgba(139, 229, 232, 1);
+        }
+    </style>
+
+    <div class="d-flex" style="margin-top: 15%">
+        <div class="mx-auto">
+            <p>
+                <h1><mark>Welcome to "ONLINE RESULT SYSTEM"</mark></h1>
+            </p>
+            <h6>{{form.message}}</h6>
+
+        </div>
+    </div>
+</div>
+{% include  "./Footer.html"%}
+
+
+
+home.html
+
+{% load static %}
+
+    {% include  "./Header.html"%}
+    <!-- {% if request.session.name == None %}
+
+   {% endif%}    -->
+<body style="background-color: whitesmoke;background-image:url('../../static/images/home.jpg'); background-repeat:no-repeat;width: 100%; background-size: cover">
+
+	<div class="container-fluid">
+            <br> 
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <h1 align="center">
+                <img src="{% static '/images/img3.png'%}" class="mx-auto d-block" style="width: 35%">
+                <br>
+            </h1>  
+	</div>          
+	</body>
+{% include  "./Footer.html"%}
+	
+
+
+home ctl add kiya h
